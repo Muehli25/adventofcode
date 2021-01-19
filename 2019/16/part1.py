@@ -8,8 +8,8 @@ DIR = pathlib.Path(__file__).parent.absolute()
 
 def create_pattern(counter, size):
     pattern = []
-    size = int(size / 4) + 1
-    for i in range(0,size):
+    needed_iterations = int(size / 4) + 1
+    for i in range(0,needed_iterations):
         for i in range(0,counter):
             pattern.append(0)
         for i in range(0, counter):
@@ -18,6 +18,8 @@ def create_pattern(counter, size):
             pattern.append(0)
         for i in range(0, counter):
             pattern.append(-1)
+        if len(pattern) > size + 1:
+            return pattern
     return pattern
 
 def get_num_array(input):
