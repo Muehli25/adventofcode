@@ -3,14 +3,16 @@ with open("./input.txt") as file:
 
 depth = 0
 horizontal_pos = 0
+aim = 0
 
 for position in input:
     command, value = position.split(" ")
     if command == "up":
-        depth -= int(value)
+        aim -= int(value)
     elif command == "down":
-        depth += int(value)
+        aim += int(value)
     elif command == "forward":
         horizontal_pos += int(value)
+        depth += aim * int(value)
 
 print(depth * horizontal_pos)
