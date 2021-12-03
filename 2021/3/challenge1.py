@@ -1,8 +1,6 @@
 with open("./input.txt") as file:
     input = [i.strip() for i in file.readlines()]
 
-print(input)
-
 gamma_rate = []
 epsilon_rate = []
 
@@ -21,5 +19,7 @@ for i in range(0, data_len):
     
 gamma = ''.join(gamma_rate)
 epsilon = ''.join(epsilon_rate)
+
+print(gamma)
 
 print(int(gamma,2) * int(epsilon,2))
