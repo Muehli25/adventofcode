@@ -14,9 +14,24 @@ def result_challenge_2():
     with open("./data/result_test_2.txt") as file:
         return int(file.read())
 
-def part_1(input):
-    fishs =  [*map(int, input[0].split(","))]
-    for _ in range (0, 80):
+def fish_count(fishs, days):
+    # The first implementation is very slow because the array is growing really fast.
+    # since i don't care for the state of every fish i can optimize it by only looking at the fish in a specific state.
+    
+    fish_age = [0] * 9 # a fish can only have a value in range of 0 - 8
+    
+    for i in fishs:
+        fish_age[i] += 1
+
+    for _ in range (0, 256):
+        x = fish_age[0]
+        fish_age = fish_age[1:] + [x]
+        fish_age[6] += x 
+    
+    return sum(fish_age)
+
+def fish_count_naive(fishs, days):
+    for _ in range (0, days):
         new_fish = 0
         for i in range(0, len(fishs)):
             if fishs[i] == 0:
@@ -29,23 +44,13 @@ def part_1(input):
 
     return len(fishs)
 
+def part_1(input):
+    fishs =  [*map(int, input[0].split(","))] 
+    return fish_count_naive(fishs, 80)
+
 def part_2(input):
-    fishs =  [*map(int, input[0].split(","))]
-    
-    # The first implementation is very slow because the array is growing relly fast.
-    # since i don't care for the state of every fish i can optimize it by only looking at the fish in a specific state.
-
-    fish_age = [0] * 9 # a fish can only have a value in range of 0 - 8
-    
-    for i in fishs:
-        fish_age[i] += 1
-
-    for _ in range (0, 256):
-        x = fish_age[0]
-        fish_age = fish_age[1:] + [x]
-        fish_age[6] += x 
-    
-    return sum(fish_age)
+    fishs =  [*map(int, input[0].split(","))] 
+    return fish_count(fishs, 256)
 
 if __name__ == "__main__":
     if part_1(test_data()) == result_challenge_1():
