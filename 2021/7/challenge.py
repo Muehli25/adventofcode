@@ -1,4 +1,5 @@
 import numpy as np
+from tqdm import tqdm
 
 def input_data():
     with open("./data/input.txt") as file:
@@ -30,8 +31,24 @@ def part_1(input):
     return min(fuel_consumption.values())
 
 def part_2(input):
-    crabs =  [*map(int, input[0].split(","))] 
-    return 0
+    crabs =  [*map(int, input[0].split(","))]
+    smallest_index = min(crabs)
+    biggest_index = max(crabs)
+
+    fuel_consumption = dict()
+
+    for i in tqdm(range(smallest_index, biggest_index)):
+        test_numbers = [i] * len(crabs)
+        difference = list(abs(np.array(crabs) - np.array(test_numbers)))
+
+        fuel_consumption_dict = dict()
+        for position in range(len(difference)):
+            fuel_consumption_dict[position] = 0
+            for step in range(1,difference[position]+1):
+                fuel_consumption_dict[position] = fuel_consumption_dict[position] + step
+        
+        fuel_consumption[i] = sum(list(fuel_consumption_dict.values()))
+    return min(fuel_consumption.values())
 
 if __name__ == "__main__":
     if part_1(test_data()) == result_challenge_1():
