@@ -16,14 +16,9 @@ def result_challenge_2():
 
 def part_1(input):
     data = [i.split("|") for i in input]
-    number_of_signal_lines_per_number = dict()
-    number_of_signal_lines_per_number[1] = 2
-    number_of_signal_lines_per_number[4] = 4
-    number_of_signal_lines_per_number[7] = 3
-    number_of_signal_lines_per_number[8] = 7
 
     instances = 0
-    for signal, output in data:
+    for _, output in data:
         for digits in output.split(" "):
             if len(digits) in (2,4,3,7):
                 instances += 1
