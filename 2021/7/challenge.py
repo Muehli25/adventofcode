@@ -43,9 +43,7 @@ def part_2(input):
 
         fuel_consumption_dict = dict()
         for position in range(len(difference)):
-            fuel_consumption_dict[position] = 0
-            for step in range(1,difference[position]+1):
-                fuel_consumption_dict[position] = fuel_consumption_dict[position] + step
+            fuel_consumption_dict[position] = (difference[position] * (difference[position] + 1)) // 2
         
         fuel_consumption[i] = sum(list(fuel_consumption_dict.values()))
     return min(fuel_consumption.values())
