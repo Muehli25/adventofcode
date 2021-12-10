@@ -1,6 +1,3 @@
-from numpy import number, sign
-
-
 def input_data():
     with open("./data/input.txt") as file:
         return [i.strip() for i in file.readlines()]
