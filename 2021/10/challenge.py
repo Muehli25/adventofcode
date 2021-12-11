@@ -24,7 +24,7 @@ def part_1(input):
 
     opening = "([{<"
     closing = ")]}>"  
-      
+
     for line in input:
         stack = []
         for l in line:
@@ -40,7 +40,33 @@ def part_1(input):
 
 
 def part_2(input):
-    return 0
+    values = { "(" :1, "[": 2,"{": 3, "<": 4 }
+    results = []
+
+    opening = "([{<"
+    closing = ")]}>"  
+      
+    incomplete = []
+    for line in input:
+        sub_score = 0
+        stack = []
+        incomplete = True
+        for l in line:
+            if l in opening:
+                stack.append(l)
+            elif l in closing:
+                pos = closing.index(l)
+                if opening[pos] != stack[-1]:
+                    incomplete = False
+                    break
+                stack.pop()
+        if incomplete:
+            for bracket in stack[::-1]:
+                sub_score = sub_score * 5 + values[bracket]
+            results.append(sub_score)
+
+    results = sorted(results)
+    return results[len(results) // 2]
 
 if __name__ == "__main__":
     if part_1(test_data()) == result_challenge_1():
