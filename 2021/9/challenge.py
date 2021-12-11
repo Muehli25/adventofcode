@@ -1,3 +1,5 @@
+from math import prod
+
 def input_data():
     with open("./data/input.txt") as file:
         return [i.strip() for i in file.readlines()]
@@ -40,7 +42,54 @@ def part_1(input):
 
 
 def part_2(input):
-    return 0
+    lowpoints = []
+    heatmap = dict()
+    for row in range(len(input)):
+        for column in range(len(input[row])):
+            heatmap[(row, column)] = int(input[row][column])
+
+    for row in range(len(input)):
+        for column in range(len(input[row])):
+            up = heatmap.get((row+1, column)) if heatmap.get((row+1, column)) != None else 9
+            down = heatmap.get((row-1, column)) if heatmap.get((row-1, column)) != None else 9
+            right = heatmap.get((row, column+1)) if heatmap.get((row, column+1)) != None else 9
+            left = heatmap.get((row, column-1)) if heatmap.get((row, column-1)) != None else 9
+
+            parameter = [up,down,right,left]
+            if all(i > heatmap.get((row,column)) for i in parameter ):
+                lowpoints.append((row,column))
+
+    basins = []
+
+    for lowpoint in lowpoints:
+
+        unchecked , checked = [lowpoint], set([lowpoint])
+        while len(unchecked) != 0:
+            prev_unchecked, unchecked = unchecked, []
+
+            for row, column in prev_unchecked:
+                up = heatmap.get((row+1, column)) if heatmap.get((row+1, column)) != None else 9
+                down = heatmap.get((row-1, column)) if heatmap.get((row-1, column)) != None else 9
+                right = heatmap.get((row, column+1)) if heatmap.get((row, column+1)) != None else 9
+                left = heatmap.get((row, column-1)) if heatmap.get((row, column-1)) != None else 9
+
+                if row < len(input) and up < 9 and (row+1, column) not in checked:
+                    checked.add((row+1, column))
+                    unchecked.append((row+1, column))
+
+                if row >= 0 and down < 9 and (row-1, column) not in checked:
+                    checked.add((row-1, column))
+                    unchecked.append((row-1, column))
+
+                if column < len(input[0]) and right < 9 and (row, column+1) not in checked:
+                    checked.add((row, column+1))
+                    unchecked.append((row, column+1))
+                if column >= 0 and left < 9 and (row, column-1) not in checked:
+                    checked.add((row, column-1))
+                    unchecked.append((row, column-1))
+                    
+        basins.append(len(checked))
+    return prod(sorted(basins)[-3:])
 
 
 if __name__ == "__main__":
