@@ -1,20 +1,29 @@
+import os
+
+path, _ = os.path.split(os.path.abspath(__file__))
+
 def input_data():
-    with open("./data/input.txt") as file:
+    with open(f"{path}/data/input.txt") as file:
         return [i.strip() for i in file.readlines()]
 
 
 def test_data():
-    with open("./data/test.txt") as file:
+    with open(f"{path}/data/test.txt") as file:
+        return [i.strip() for i in file.readlines()]
+
+
+def test_data_2():
+    with open(f"{path}/data/test_2.txt") as file:
         return [i.strip() for i in file.readlines()]
 
 
 def result_challenge_1():
-    with open("./data/result_test_1.txt") as file:
+    with open(f"{path}/data/result_test_1.txt") as file:
         return int(file.read())
 
 
 def result_challenge_2():
-    with open("./data/result_test_2.txt") as file:
+    with open(f"{path}/data/result_test_2.txt") as file:
         return int(file.read())
 
 

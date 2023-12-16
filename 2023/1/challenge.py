@@ -1,27 +1,30 @@
 import string 
+import os
+
+path, _ = os.path.split(os.path.abspath(__file__))
 
 def input_data():
-    with open("./data/input.txt") as file:
+    with open(f"{path}/data/input.txt") as file:
         return [i.strip() for i in file.readlines()]
 
 
 def test_data():
-    with open("./data/test.txt") as file:
+    with open(f"{path}/data/test.txt") as file:
         return [i.strip() for i in file.readlines()]
 
 
 def test_data_2():
-    with open("./data/test_2.txt") as file:
+    with open(f"{path}/data/test_2.txt") as file:
         return [i.strip() for i in file.readlines()]
 
 
 def result_challenge_1():
-    with open("./data/result_test_1.txt") as file:
+    with open(f"{path}/data/result_test_1.txt") as file:
         return int(file.read())
 
 
 def result_challenge_2():
-    with open("./data/result_test_2.txt") as file:
+    with open(f"{path}/data/result_test_2.txt") as file:
         return int(file.read())
 
 
@@ -34,31 +37,27 @@ def part_1(input):
 
 
 def part_2(input):
-    digits = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
-    digits_dict = {"one" :"1", "two":"2", "three":"3", "four":"4", "five":"5", "six":"6", "seven":"7", "eight":"8", "nine":"9"}
-    input_cleanup = [e.replace(key, val) for e in input for key, val in digits_dict.items() if key in e]
-    result = 0
-    input_cleaned = []
+    replaced_input = []
     for line in input:
-        print(line)
-        updated_line
-    #     for j in range(len(line)):
-    #         if line[:j] in digits:
-    #             line = line.replace(line[:j], str(digits.index(line[:j])+1))
-    #     print(line)
-    #     for j in range(len(line), 0, -1):
-    #         print(line[j:])
-    #         if line[j:] in digits:
-    #             line = line.replace(line[j:], str(digits.index(line[j:])+1))
-    #     print(line)
-    #     # for i, digstr in enumerate(digits):
-    #     #     line = line.replace(digstr, str(i+1))
-    #     numbers = [i for i in line if i in string.digits]
-    #     print(numbers)
-    #     result = result + int(numbers[0] + numbers[-1])
-    #     print(result)
-    #     print("")
-    return result
+        replaced_input.append(replace_digits(line))
+    return part_1(replaced_input)
+
+def replace_digits(input_string):
+    line = input_string
+    # Sadly there is a overlap in my input, so I need to replace it to allow overlaps
+    digits_dict = {"one" :"o1e", "two":"t2o", "three":"t3e", "four":"f4r", "five":"f5e", "six":"s6x", "seven":"s7n", "eight":"e8t", "nine":"n9e"} 
+    start = 0
+    result_line = line
+    while True:
+        line = result_line
+        for i in range(start, len(line) + 1):
+            if line[start:i] in digits_dict.keys():
+                result_line = line.replace(line[start:i], digits_dict[line[start:i]])
+                break
+        start = start + 1
+        if start == len(line) + 1: # complete string was replaced.
+            return result_line
+
 
 if __name__ == "__main__":
     if part_1(test_data()) == result_challenge_1():
