@@ -1,5 +1,6 @@
 import os
 
+# ------ Read Input ------
 path, _ = os.path.split(os.path.abspath(__file__))
 
 def input_data():
@@ -26,7 +27,10 @@ def result_challenge_2():
     with open(f"{path}/data/result_test_2.txt") as file:
         return int(file.read())
 
+# ------ Helper ------
 
+
+# ------ Parts ------
 def part_1(input):
     return 0
 
