@@ -44,19 +44,6 @@ def parse_game(input):
 def numbers_only_array(input):
     return [int(i) for i in input.strip().split(" ") if i and i != " "]
 
-def recursive_games(raw_games, input, value):
-    if len(input) == 0:
-        return value
-    new_cards = []
-    for game in tqdm(input):
-        nr, win_num, my_num = game
-        winning_games = len([x for x in my_num if x in win_num])
-        if winning_games > 0:
-            new_cards = new_cards + raw_games[nr:nr + winning_games]
-        value = value + 1
-
-    return recursive_games(raw_games, new_cards, value)
-
 def recursive_games_2(raw_games, input):
     if len(input) == 0:
         return 0
@@ -68,27 +55,6 @@ def recursive_games_2(raw_games, input):
             value += recursive_games_2(raw_games, raw_games[nr:nr + winning_games])
 
     return value
-
-def preprocessing_gamesheets(input):
-    games_dict = {}
-    for game in input:
-        nr, win_num, my_num = game
-        winning_games = len([x for x in my_num if x in win_num])
-        games_dict[nr] = winning_games
-    return games_dict
-
-def recursive_games_preprocessed(raw_games, input, value, games_dict):
-    if len(input) == 0:
-        return value
-    new_cards = []
-    for game in tqdm(input):
-        nr, win_num, my_num = game
-        winning_games = games_dict[nr]
-        if winning_games > 0:
-            new_cards = new_cards + raw_games[nr:nr + winning_games]
-        value = value + 1
-
-    return recursive_games_preprocessed(raw_games, new_cards, value, games_dict)
 
 # ------ Parts ------
 def part_1(input):
@@ -103,10 +69,6 @@ def part_1(input):
 
 def part_2(input):
     input = parse_game(input)
-    # This recursive does take forever
-    # games_dict = preprocessing_gamesheets(input)
-    # print(recursive_games_preprocessed(input, input, 0, games_dict))
-    # print(recursive_games(input, input, 0))
     return recursive_games_2(input, input)
 
 if __name__ == "__main__":
