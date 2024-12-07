@@ -35,17 +35,25 @@ def part_1(input):
     left, right = [],[]
     for line in input:
         l, r = line.rsplit("   ")
-        left.append(l)
-        right.append(r)
+        left.append(int(l))
+        right.append(int(r))
     temp = zip(sorted(left), sorted(right))
     sum = 0
     for i in temp:
-        sum += abs(int(i[0]) - int(i[1]))    
+        sum += abs(i[0] - i[1])   
     return sum
 
 
 def part_2(input):
-    return 0
+    left, right = [],[]
+    for line in input:
+        l, r = line.rsplit("   ")
+        left.append(int(l))
+        right.append(int(r))
+    score = 0
+    for left_number in left:
+        score += left_number * right.count(left_number)
+    return score
 
 if __name__ == "__main__":
     if part_1(test_data()) == result_challenge_1():
