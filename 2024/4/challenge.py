@@ -78,6 +78,27 @@ def diagonal(input, row, col):
         result += 0
     return result
 
+# only for options
+def findMAS(input, row, col):
+    if row == 0 or col == 0:
+        return False
+    try:
+        if input[row][col] == "A":
+            if input[row - 1][col - 1] == "M":
+                if input[row - 1][col + 1] == "M":
+                    return input[row + 1][col - 1] == "S" and input[row + 1][col + 1] == "S"
+                elif input[row - 1][col + 1] == "S":
+                    return input[row + 1][col - 1] == "M" and input[row + 1][col + 1] == "S"
+            elif input[row - 1][col - 1] == "S":
+                if input[row - 1][col + 1] == "M":
+                    return input[row + 1][col - 1] == "S" and input[row + 1][col + 1] == "M"
+                elif input[row - 1][col + 1] == "S":
+                    return input[row + 1][col - 1] == "M" and input[row + 1][col + 1] == "M"
+    except IndexError:
+        return False
+    else:
+        return False
+
 # ------ Parts ------
 def part_1(input):
     result = 0
@@ -91,7 +112,12 @@ def part_1(input):
 
 
 def part_2(input):
-    return 0
+    result = 0
+    for row in range(len(input)):
+        for column in range(len(input[0])):
+            if(input[row][column] == "A"):
+                result += int(findMAS(input, row, column))
+    return result
 
 if __name__ == "__main__":
     if part_1(test_data()) == result_challenge_1():
