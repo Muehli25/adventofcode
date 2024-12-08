@@ -1,4 +1,5 @@
 import os
+import re
 
 # ------ Read Input ------
 path, _ = os.path.split(os.path.abspath(__file__))
@@ -32,11 +33,31 @@ def result_challenge_2():
 
 # ------ Parts ------
 def part_1(input):
-    return 0
+    result = 0
+    for line in input:
+        mults = re.findall("mul\\(\\d*,\\d*\\)", line)
+        for multiply in mults:
+            values = [int(x) for x in re.findall("\\d*", multiply) if x]
+            a,b = int(values[0]), int(values[1])
+            result += a*b
+    return result
 
 
 def part_2(input):
-    return 0
+    result = 0
+    mults_on = True
+    for line in input:
+        do = "do\\(\\)"
+        dont = "don't\\(\\)"
+        mults = "mul\\((\\d+),(\\d+)\\)"
+        for x in re.finditer(f'{do}|{dont}|{mults}', line):
+            if re.fullmatch(do, x.group()):
+                mults_on = True
+            elif re.fullmatch(dont, x.group()):
+                mults_on = False
+            elif mults_on:
+                result += int(x.group(1)) * int(x.group(2))
+    return result
 
 if __name__ == "__main__":
     if part_1(test_data()) == result_challenge_1():
