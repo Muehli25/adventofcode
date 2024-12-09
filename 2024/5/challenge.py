@@ -56,9 +56,39 @@ def part_1(input):
     
     return result
 
+from functools import cmp_to_key
 
 def part_2(input):
-    return 0
+    result = 0
+
+    separator = input.index("")
+    rules = [x.split("|") for x in input[0:separator]]
+    manuals = [x.split(",") for x in input[separator+1:]]
+
+    rules_tuple = [(x.split("|")[0], x.split("|")[1]) for x in input[0:separator]]
+
+    broken_manuals = []
+
+    for manual in manuals:
+        correct = True
+        for rule in rules:
+            if not check_rule(manual, rule):
+                correct = False
+        if not correct:
+            broken_manuals.append(manual)
+    
+    for manual in broken_manuals:
+        manual.sort(
+                key=cmp_to_key(
+                    lambda lhs, rhs: (
+                        -1 if (lhs, rhs) in rules_tuple else (1 if (rhs, lhs) in rules_tuple else 0)
+                    )
+                )
+            )
+        result += int(manual[math.floor(len(manual)/2)])
+
+    return result
+
 
 if __name__ == "__main__":
     if part_1(test_data()) == result_challenge_1():
